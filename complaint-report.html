@@ -13,7 +13,7 @@
             <legend>Complaint</legend>
 
             <label for="inputComplaint">Complaint</label>
-            <input type="inputComplaint" placeholder="Write complaint here" required minlength="3" maxlength="200">
+            <input type="text" id="inputComplaint" placeholder="Write complaint here" required minlength="3" maxlength="200">
 
         </fieldset>
 
@@ -28,8 +28,8 @@
     document.addEventListener("submit", async event => {
         event.preventDefault();
 
-        const complaint_desc = inputComplaint.value;
-        const complaint = {complaintId:0, complaint_desc, status:"unreviewed", meetingId:-1};
+        const complaintDesc = inputComplaint.value;
+        const complaint = {complaintId:0, complaintDesc, status:"unreviewed", meetingId:-1};
 
         const response = await fetch("http://localhost:8080/complaints", {
             method:"POST",
