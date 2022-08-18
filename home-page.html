@@ -30,7 +30,9 @@
 
         const testMeetings = await getMeetings();
 
-        for(const meeting of testMeetings){
+        //const result=testMeetings.filter(meeting=> meeting.meetingId > 0);
+
+        for(const meeting of result){
 
             const meetingRow = document.createElement("tr");
 

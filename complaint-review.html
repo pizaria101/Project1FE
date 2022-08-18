@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Unreviewed Complaints</title>
+</head>
+<body>
+    <h1>Unreviewed Complaints</h1>
+
+    <table>
+        <thead>
+            <tr><th>Complaint ID</th><th>Description</th><th>Status</th></tr>
+        </thead>
+        <tbody id="complaintTableBody">  
+        </tbody>
+    </table>
+    
+</body>
+<script>
+
+    const complaintTableBody = document.getElementById("complaintTableBody");
+
+    async function getComplaints(){
+        const httpResponse = await fetch("http://localhost:8080/complaints");
+        const complaints = await httpResponse.json();
+        return complaints;
+    }
+
+    async function renderComplaintTable(){
+
+        const testComplaints = await getComplaints();
+
+        const result = testComplaints.filter(complaint => complaint.status === "UNREVIEWED");
+
+        for(const complaint of result){
+
+            const complaintRow = document.createElement("tr");
+
+            const complaintIdData = document.createElement("td");
+            complaintIdData.innerText = complaint.complaintId;
+
+            const complaintDescData = document.createElement("td");
+            complaintDescData.innerText = complaint.complaintDesc;
+
+            const complaintStatusData = document.createElement("td");
+            complaintStatusData.innerText = complaint.status;
+
+            complaintRow.appendChild(complaintIdData);
+            complaintRow.appendChild(complaintDescData);
+            complaintRow.appendChild(complaintStatusData);
+
+            complaintTableBody.appendChild(complaintRow);
+        }
+    }
+
+    renderComplaintTable();
+    
+</script>
+</html>
