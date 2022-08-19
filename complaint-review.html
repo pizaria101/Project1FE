@@ -8,7 +8,7 @@
 
     <table>
         <thead>
-            <tr><th>Complaint ID</th><th>Description</th><th>Status</th></tr>
+            <tr><th>Complaint ID</th><th>Description</th><th>Status</th><th>Change to High Priority</th></tr>
         </thead>
         <tbody id="complaintTableBody">  
         </tbody>
@@ -44,9 +44,42 @@
             const complaintStatusData = document.createElement("td");
             complaintStatusData.innerText = complaint.status;
 
+            const complaintHighBtn = document.createElement("button");
+            complaintHighBtn.innerText = "High Priority";
+            
+            complaintHighBtn.dataset.complaintId = complaint.complaintId;
+            complaintHighBtn.dataset.status = "high";
+            
+            complaintHighBtn.addEventListener("submit", async event => {
+
+                event.preventDefault();
+
+                const newComplaint = {complaintId, complaintDesc, status, meeting_id}
+
+                const response = await fetch(`http://localhost:8080/complaints/${complaintId}/${status}`, {
+                    method:"PATCH",
+                    body: JSON.stringify(newComplaint),
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                });
+                    
+                    if (response.status === 202){
+
+                        alert("Status changed.");
+
+                    }else if (response.status === 304){
+
+                        alert("Status not changed.");
+
+                    }
+                }
+            );
+
             complaintRow.appendChild(complaintIdData);
             complaintRow.appendChild(complaintDescData);
             complaintRow.appendChild(complaintStatusData);
+            complaintRow.appendChild(complaintHighBtn);
 
             complaintTableBody.appendChild(complaintRow);
         }
