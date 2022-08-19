@@ -50,20 +50,23 @@
             complaintHighBtn.dataset.complaintId = complaint.complaintId;
             complaintHighBtn.dataset.status = "high";
             
-            complaintHighBtn.addEventListener("submit", async event => {
+            complaintHighBtn.addEventListener("click", async event => {
 
                 event.preventDefault();
 
-                const newComplaint = {complaintId, complaintDesc, status, meeting_id}
+                const complaintIdDs = complaintHighBtn.dataset.complaintId;
+                const statusDs = complaintHighBtn.dataset.status;
 
-                const response = await fetch(`http://localhost:8080/complaints/${complaintId}/${status}`, {
+                console.log(complaintIdDs);
+                console.log(statusDs);
+
+                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
                     method:"PATCH",
-                    body: JSON.stringify(newComplaint),
+                    body: JSON.stringify(complaintIdDs, statusDs),
                     headers:{
                         "Content-Type":"application/json"
                     }
                 });
-                    
                     if (response.status === 202){
 
                         alert("Status changed.");
@@ -73,6 +76,7 @@
                         alert("Status not changed.");
 
                     }
+                    location.reload();
                 }
             );
 
