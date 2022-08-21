@@ -8,7 +8,7 @@
 
     <table>
         <thead>
-            <tr><th>Complaint ID</th><th>Description</th><th>Status</th><th>Change to High Priority</th></tr>
+            <tr><th>Complaint ID</th><th>Description</th><th>Status</th><th>Change Status</th></tr>
         </thead>
         <tbody id="complaintTableBody">  
         </tbody>
@@ -49,6 +49,18 @@
             
             complaintHighBtn.dataset.complaintId = complaint.complaintId;
             complaintHighBtn.dataset.status = "high";
+
+            const complaintLowBtn = document.createElement("button");
+            complaintLowBtn.innerText = "Low Priority";
+
+            complaintLowBtn.dataset.complaintId = complaint.complaintId;
+            complaintLowBtn.dataset.status = "low";
+
+            const complaintIgnoreBtn = document.createElement("button");
+            complaintIgnoreBtn.innerText = "Ignore";
+
+            complaintIgnoreBtn.dataset.complaintId = complaint.complaintId;
+            complaintIgnoreBtn.dataset.status = "ignore";
             
             complaintHighBtn.addEventListener("click", async event => {
 
@@ -57,8 +69,59 @@
                 const complaintIdDs = complaintHighBtn.dataset.complaintId;
                 const statusDs = complaintHighBtn.dataset.status;
 
-                console.log(complaintIdDs);
-                console.log(statusDs);
+                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
+                    method:"PATCH",
+                    body: JSON.stringify(complaintIdDs, statusDs),
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                });
+                    if (response.status === 202){
+
+                        alert("Status changed.");
+
+                    }else if (response.status === 304){
+
+                        alert("Status not changed.");
+
+                    }
+                    location.reload();
+                }
+            );
+
+            complaintLowBtn.addEventListener("click", async event => {
+
+                event.preventDefault();
+
+                const complaintIdDs = complaintLowBtn.dataset.complaintId;
+                const statusDs = complaintLowBtn.dataset.status;
+
+                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
+                    method: "PATCH",
+                    body: JSON.stringify(complaintIdDs, statusDs),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+                    if (response.status === 202) {
+
+                        alert("Status changed.");
+
+                    } else if (response.status === 304) {
+
+                        alert("Status not changed.");
+
+                    }
+                    location.reload();
+                }
+            );
+
+            complaintIgnoreBtn.addEventListener("click", async event => {
+
+                event.preventDefault();
+
+                const complaintIdDs = complaintIgnoreBtn.dataset.complaintId;
+                const statusDs = complaintIgnoreBtn.dataset.status;
 
                 const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
                     method:"PATCH",
@@ -84,6 +147,8 @@
             complaintRow.appendChild(complaintDescData);
             complaintRow.appendChild(complaintStatusData);
             complaintRow.appendChild(complaintHighBtn);
+            complaintRow.appendChild(complaintLowBtn);
+            complaintRow.appendChild(complaintIgnoreBtn);
 
             complaintTableBody.appendChild(complaintRow);
         }
