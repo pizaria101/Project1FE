@@ -30,7 +30,7 @@
 
         const testMeetings = await getMeetings();
 
-        //const result=testMeetings.filter(meeting=> meeting.meetingId > 0);
+        const result=testMeetings.filter(meeting=> meeting.meetingId > 0);
 
         for(const meeting of result){
 
@@ -43,7 +43,8 @@
             meetingAddressData.innerText = meeting.address;
 
             const meetingTimeData = document.createElement("td");
-            meetingTimeData.innerText = meeting.time;
+            const timeDate = new Date(meeting.time * 1000);
+            meetingTimeData.innerText = timeDate.toLocaleString();
 
             meetingRow.appendChild(meetingDescData);
             meetingRow.appendChild(meetingAddressData);

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create Meeting</title>
+</head>
+<body>
+
+    <h1>Create Meeting</h1>
+
+    <form>
+        <fieldset>
+            <legend>Meeting</legend>
+
+            <label for="inputTime">Time</label>
+            <input type="text" id="inputTime" placeholder="August 22, 2022 06:30:00">
+
+            <label for="inputAddress">Address</label>
+            <input type="text" id="inputAddress" placeholder="Enter address here">
+
+            <label for="inputDesc">Description</label>
+            <input type="text" id="inputDesc" placeholder="Enter description here" required minlength="3" maxlength="200">
+
+        </fieldset>
+
+        <button>Submit</button>
+
+    </form>
+    
+</body>
+<script>
+
+    const inputTime = document.getElementById("inputTime");
+    const inputAddress = document.getElementById("inputAddress");
+    const inputDesc = document.getElementById("inputDesc");
+
+    document.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const timeDate = new Date(inputTime.value);
+        const timeEpoch = timeDate.getTime()/1000.0;
+
+        const time = timeEpoch;
+        const address = inputAddress.value;
+        const meetingDesc = inputDesc.value;
+
+        const meeting = {meetingId:0, address, time, meetingDesc};
+
+        const response = await fetch("http://localhost:8080/meetings", {
+            method:"POST",
+            body: JSON.stringify(meeting),
+            headers: {
+                "Content-Type" : "application/json"
+            }
+        });
+
+        if(response.status === 201){
+            alert("Meeting successfully created.");
+            inputTime.value = "";
+            inputAddress.value = "";
+            inputDesc.value = "";
+        }else{
+            alert("Something went wrong.");
+        }
+    });
+</script>
+</html>
