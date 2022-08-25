@@ -4,7 +4,7 @@
     <title>Home Page</title>
 </head>
 <body>
-    <nav><a href="">Report Complaint</a></nav>
+    <nav><a href="file:///C:/Users/mtthw/Notes/Project1FE/complaint-report.html">Report Complaint</a></nav>
     <h1>Karakura Town Meetings</h1>
 
     <table>
@@ -14,11 +14,29 @@
         <tbody id="meetingTableBody">
         </tbody>
     </table>
+
+    <!-- login present here, redirect council members to council-member.html -->
+    <form>
+        <fieldset>
+            <legend>Council Member Login</legend>
+
+            <label for="inputUsername">Username</label>
+            <input type="text" id="inputUsername" placeholder="Enter username here">
+
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" placeholder="Enter password here">
+        </fieldset>
+
+        <button>Login</button>
+
+    </form>
     
 </body>
 <script>
 
     const meetingTableBody = document.getElementById("meetingTableBody");
+    const inputUsername = document.getElementById("inputUsername");
+    const inputPassword = document.getElementById("inputPassword");
 
     async function getMeetings(){
         const httpResponse = await fetch("http://localhost:8080/meetings");
@@ -55,6 +73,40 @@
     }
 
     renderMeetingTable();
+
+    document.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const username = inputUsername.value;
+        const password = inputPassword.value;
+        const credentials = {username,password};
+
+        const response = await fetch("http://localhost:8080/login", {
+            method:"POST",
+            body:JSON.stringify(credentials),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        });
+
+        if(response.status === 200){
+            const user = await response.json();
+            alert("Login Successful");
+            window.location = "file:///C:/Users/mtthw/Notes/Project1FE/council-member.html";
+            user.password = null;
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.getItem("user");
+            localStorage.clear();
+        }
+
+        if(response.status === 404){
+            alert("Username not found");
+        }
+
+        if(response.status === 400){
+            alert("Password does not match");
+        }
+    });
 
 </script>
 </html>
