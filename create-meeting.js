@@ -1,4 +1,5 @@
 const complaintTableBody = document.getElementById("complaintTableBody");
+const inputDate = document.getElementById("inputDate");
 const inputTime = document.getElementById("inputTime");
 const inputAddress = document.getElementById("inputAddress");
 const inputDesc = document.getElementById("inputDesc");
@@ -49,14 +50,14 @@ renderComplaintTable();
 document.addEventListener("submit", async event => {
     event.preventDefault();
 
-    const timeDate = new Date(inputTime.value);
-    const timeEpoch = timeDate.getTime()/1000.0;
-
-    const time = timeEpoch;
+    const date = inputDate.value;
+    const time = inputTime.value;
+    const fullDate = new Date(date + " " + time);
+    const epoch = fullDate.getTime()/1000.0;
     const address = inputAddress.value;
     const meetingDesc = inputDesc.value;
 
-    const meeting = {meetingId:0, address, time, meetingDesc};
+    const meeting = {meetingId:0, address, epoch, meetingDesc};
 
     const response = await fetch("http://localhost:8080/meetings", {
         method:"POST",

@@ -4,7 +4,59 @@
     <title>Council Member Page</title>
 </head>
 <body>
-    <!-- have two buttons that lead to change status and create meeting -->
-    <!-- for change status, have three buttons to run update command, then remove off list -->
+    <h2>Welcome Council Member!</h2>
+    <nav><a href="file:///C:/Users/mtthw/Notes/Project1FE/complaint-review.html">Review Complaints</a></nav> 
+    <nav><a href="file:///C:/Users/mtthw/Notes/Project1FE/create-meeting.html">Create Meeting</a></nav>
+    
+    <h4>Karakura Town Meetings</h4>
+
+    <table>
+        <thead>
+            <tr><th>Description</th><th>Address</th><th>Time</th></tr>
+        </thead>
+        <tbody id="meetingTableBody">
+        </tbody>
+    </table>
+    
 </body>
+<script>
+
+    const meetingTableBody = document.getElementById("meetingTableBody");
+    
+    async function getMeetings(){
+        const httpResponse = await fetch("http://localhost:8080/meetings");
+        const meetings = await httpResponse.json();
+        return meetings;
+    }
+
+    async function renderMeetingTable(){
+
+        const testMeetings = await getMeetings();
+
+        const result=testMeetings.filter(meeting=> meeting.meetingId > 0);
+
+        for(const meeting of result){
+
+            const meetingRow = document.createElement("tr");
+
+            const meetingDescData = document.createElement("td");
+            meetingDescData.innerText = meeting.meetingDesc;
+
+            const meetingAddressData = document.createElement("td");
+            meetingAddressData.innerText = meeting.address;
+
+            const meetingTimeData = document.createElement("td");
+            const timeDate = new Date(meeting.time * 1000);
+            meetingTimeData.innerText = timeDate.toLocaleString();
+
+            meetingRow.appendChild(meetingDescData);
+            meetingRow.appendChild(meetingAddressData);
+            meetingRow.appendChild(meetingTimeData);
+
+            meetingTableBody.appendChild(meetingRow);
+        }
+    }
+
+    renderMeetingTable();
+</script>
 </html>
