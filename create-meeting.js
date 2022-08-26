@@ -26,6 +26,7 @@ async function renderComplaintTable(){
         complaintAdd.value = "value";
         complaintAdd.id = "id";
         complaintAdd.dataset.complaintId = complaint.complaintId;
+        complaintAdd.dataset.status = "addressed";
 
         const complaintIdData = document.createElement("td");
         complaintIdData.innerText = complaint.complaintId;
@@ -57,7 +58,7 @@ document.addEventListener("submit", async event => {
     const address = inputAddress.value;
     const meetingDesc = inputDesc.value;
 
-    const meeting = {meetingId:0, address, epoch, meetingDesc};
+    const meeting = {meetingId:0, address, time:epoch, meetingDesc};
 
     const response = await fetch("http://localhost:8080/meetings", {
         method:"POST",
@@ -79,12 +80,14 @@ document.addEventListener("submit", async event => {
 
             if(complaintCheck.checked){
                 const complaintId = complaintCheck.dataset.complaintId;
+                const complaintStatusDs = complaintCheck.dataset.status;
                 const response = await fetch(`http://localhost:8080/complaints/${complaintId}/meetings/${meetingIdDs}`, {
                 method:"PATCH",
                 body: JSON.stringify(complaintId, meetingIdDs),
                 headers:{
                     "Content-Type":"application/json"
                 }
+
             });
                 if (response.status === 202){
 
@@ -94,13 +97,23 @@ document.addEventListener("submit", async event => {
 
                     console.log("Failure.");
 
-                } 
+                }
+                
+                const responseStatus = await fetch(`http://localhost:8080/complaints/${complaintId}/${complaintStatusDs}`, {
+                method:"PATCH",
+                body: JSON.stringify(complaintId, complaintStatusDs),
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            });
             }
         }
         alert("Meeting successfully created.");
         inputTime.value = "";
         inputAddress.value = "";
         inputDesc.value = "";
+
+        location.reload();
     }else{
         console.log("Something went wrong.");
     }
