@@ -5,7 +5,7 @@ const inputAddress = document.getElementById("inputAddress");
 const inputDesc = document.getElementById("inputDesc");
 
 async function getComplaints(){
-    const httpResponse = await fetch("http://localhost:8080/complaints");
+    const httpResponse = await fetch("https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints");
     const complaints = await httpResponse.json();
     return complaints;
 }
@@ -60,7 +60,7 @@ document.addEventListener("submit", async event => {
 
     const meeting = {meetingId:0, address, time:epoch, meetingDesc};
 
-    const response = await fetch("http://localhost:8080/meetings", {
+    const response = await fetch("https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/meetings", {
         method:"POST",
         body: JSON.stringify(meeting),
         headers: {
@@ -81,7 +81,7 @@ document.addEventListener("submit", async event => {
             if(complaintCheck.checked){
                 const complaintId = complaintCheck.dataset.complaintId;
                 const complaintStatusDs = complaintCheck.dataset.status;
-                const response = await fetch(`http://localhost:8080/complaints/${complaintId}/meetings/${meetingIdDs}`, {
+                const response = await fetch(`https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints/${complaintId}/meetings/${meetingIdDs}`, {
                 method:"PATCH",
                 body: JSON.stringify(complaintId, meetingIdDs),
                 headers:{
@@ -99,7 +99,7 @@ document.addEventListener("submit", async event => {
 
                 }
                 
-                const responseStatus = await fetch(`http://localhost:8080/complaints/${complaintId}/${complaintStatusDs}`, {
+                const responseStatus = await fetch(`https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints/${complaintId}/${complaintStatusDs}`, {
                 method:"PATCH",
                 body: JSON.stringify(complaintId, complaintStatusDs),
                 headers:{

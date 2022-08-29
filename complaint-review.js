@@ -1,7 +1,7 @@
 const complaintTableBody = document.getElementById("complaintTableBody");
 
     async function getComplaints(){
-        const httpResponse = await fetch("http://localhost:8080/complaints");
+        const httpResponse = await fetch("https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints");
         const complaints = await httpResponse.json();
         return complaints;
     }
@@ -50,7 +50,7 @@ const complaintTableBody = document.getElementById("complaintTableBody");
                 const complaintIdDs = complaintHighBtn.dataset.complaintId;
                 const statusDs = complaintHighBtn.dataset.status;
 
-                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
+                const response = await fetch(`https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints/${complaintIdDs}/${statusDs}`, {
                     method:"PATCH",
                     body: JSON.stringify(complaintIdDs, statusDs),
                     headers:{
@@ -77,7 +77,7 @@ const complaintTableBody = document.getElementById("complaintTableBody");
                 const complaintIdDs = complaintLowBtn.dataset.complaintId;
                 const statusDs = complaintLowBtn.dataset.status;
 
-                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
+                const response = await fetch(`https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints/${complaintIdDs}/${statusDs}`, {
                     method: "PATCH",
                     body: JSON.stringify(complaintIdDs, statusDs),
                     headers:{
@@ -104,7 +104,7 @@ const complaintTableBody = document.getElementById("complaintTableBody");
                 const complaintIdDs = complaintIgnoreBtn.dataset.complaintId;
                 const statusDs = complaintIgnoreBtn.dataset.status;
 
-                const response = await fetch(`http://localhost:8080/complaints/${complaintIdDs}/${statusDs}`, {
+                const response = await fetch(`https://schulte-app.proudsea-316ea47b.eastus.azurecontainerapps.io/complaints/${complaintIdDs}/${statusDs}`, {
                     method:"PATCH",
                     body: JSON.stringify(complaintIdDs, statusDs),
                     headers:{
